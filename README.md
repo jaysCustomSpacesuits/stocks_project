@@ -1,14 +1,15 @@
-Stocks Project
+#Stock Tracker
 
-This repo contains a small Dash app in stocks.py that is intended to be used for tracking stock performance based on stocks that meet a number of criteria which can be selected at : 
+This repo contains a small Dash app for tracking stock performance based on stocks that meet a number of criteria which can be selected at: 
 
 https://finviz.com/screener.ashx
 
 
+**stock_class_idea.py can be ignored**
 
-*stock_class_idea.py can be ignored*
+type 'python3 stocks.py' to run
 
-It is intended to be run each day in order to catch all new stocks that meet the given criteria and add them to a database. Each new stock has the past 30 days of data pulled. Each consecutive day after that the previous days data is retrieved and appended to the database. It will also graph the price history for each stock as a candlestick chart.
+It is intended to be run each day in order to catch all new stocks that meet the given criteria and add them to a database. Each new stock has the past 30 days of data pulled. Each consecutive day after that the previous days data is retrieved and appended to each respective table. It will also graph the price history for each stock as a candlestick chart.
 
 The app primarily revolves around four functions.
 
@@ -35,3 +36,7 @@ retrieve_sql_tables()
 
 
 The remainder of the stocks.py contains the code for the Dash app and the graphs which are read from the database and plotted with plotly.graph_objects
+
+to do:
+- [] put lines 111 through 125 into a function
+- [] put functions into modules and break out dash app into its own file
