@@ -44,5 +44,5 @@ retrieve_sql_tables()
 The remainder of the stocks.py contains the code for the Dash app and the graphs which are read from the database and plotted with plotly.graph_objects
 
 to do:
-- [] put lines 111 through 125 into a function
-- [] put functions into modules and break out dash app into its own file
+- [ ] put lines 111 through 125 into a function
+- [ ] put functions into modules and break out dash app into its own file
