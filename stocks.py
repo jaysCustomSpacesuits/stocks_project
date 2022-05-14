@@ -18,7 +18,7 @@ import dash_html_components as html
 
 def get_stock_list():
     headers = {'User-Agent': 'Mozilla/5.0'}
-    stocks = requests.get("https://finviz.com/screener.ashx?v=111&f=ta_changeopen_u,ta_sma20_cross200a,ta_sma50_pca&ft=3&o=-volume", headers=headers)
+    stocks = requests.get("https://finviz.com/screener.ashx?v=111&s=ta_p_wedgeup", headers=headers)
     stock_soup = BeautifulSoup(stocks.content, 'html.parser')
     stock_comment = str(stock_soup.find(string=lambda text: isinstance(text, Comment)))
     stock_list = stock_comment.split('\n')
@@ -108,20 +108,20 @@ sql_tables = retrieve_sql_tables()
 # pulling data from db into pandas df and plotting candlestick
 # charts with plotly
 
-sql_table_dict = {}
-sql_table_list = []
-list_of_sql_dict_keys = []
+stock_data_dict = {}
+plotly_charts_list = []
+stock_ticker_list = []
 
 for i in range(len(sql_tables)):
-    sql_table_dict[sql_tables[i]] = pd.read_sql(f'SELECT * FROM {sql_tables[i]}', conn)
+    stock_data_dict[sql_tables[i]] = pd.read_sql(f'SELECT * FROM {sql_tables[i]}', conn)
 
-for i in sql_table_dict.keys():
-    list_of_sql_dict_keys.append(i)
+for i in stock_data_dict.keys():
+    stock_ticker_list.append(i)
 
-for i in sql_table_dict:
-    sql_table_list.append(go.Figure(data=[go.Candlestick(x=sql_table_dict[i]['Date'], open=sql_table_dict[i]['Open'], high=sql_table_dict[i]['High'], low=sql_table_dict[i]['Low'], close=sql_table_dict[i]['Close'])]))
+for i in stock_data_dict:
+    plotly_charts_list.append(go.Figure(data=[go.Candlestick(x=stock_data_dict[i]['Date'], open=stock_data_dict[i]['Open'], high=stock_data_dict[i]['High'], low=stock_data_dict[i]['Low'], close=stock_data_dict[i]['Close'])]))
 
-for i, j in zip(sql_table_list, list_of_sql_dict_keys):
+for i, j in zip(plotly_charts_list, stock_ticker_list):
     i.update_layout(title=j)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -130,7 +130,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 test_output = []
 
-for m, n in zip(list_of_sql_dict_keys, sql_table_list):
+for m, n in zip(stock_ticker_list, plotly_charts_list):
     test_output.append(dcc.Graph(id=str(m), figure=n))
 
 app.layout = html.Div(children=[
